@@ -36,24 +36,24 @@ jobs:
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          role-to-assume: arn:aws:iam::292960608922:role/github-deploy-maxshefter-lab-site
           aws-region: us-east-1
 
       - name: Sync to S3
         run: |
           # HTML: always revalidate so updates show up immediately
-          aws s3 sync site/ "s3://${{ vars.S3_BUCKET }}" --delete \
+          aws s3 sync site/ "s3://maxshefter-lab.online" --delete \
             --exclude "*" --include "*.html" \
             --cache-control "public, max-age=0, must-revalidate"
           # Everything else (images, pdf, css): cache for a day
-          aws s3 sync site/ "s3://${{ vars.S3_BUCKET }}" --delete \
+          aws s3 sync site/ "s3://maxshefter-lab.online" --delete \
             --exclude "*.html" \
             --cache-control "public, max-age=86400"
 
       - name: Invalidate CloudFront
         run: |
           aws cloudfront create-invalidation \
-            --distribution-id "${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}" \
+            --distribution-id "E1ZBP6P5QVDD0B" \
             --paths "/*"
 
       - name: Smoke test
