@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maxim Shefter — DevOps & Cloud Engineer</title>
+<meta name="description" content="Maxim Shefter — DevOps & Cloud Engineer in Israel. AWS, Terraform, Kubernetes (EKS), CI/CD. Hands-on labs, real debugging write-ups, infrastructure as code.">
+<link rel="canonical" href="https://maxshefter-lab.online/">
+<meta name="theme-color" content="#0b0f14">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://maxshefter-lab.online/">
+<meta property="og:title" content="Maxim Shefter — DevOps & Cloud Engineer">
+<meta property="og:description" content="AWS · Terraform · Kubernetes · CI/CD. Hands-on labs and real debugging write-ups.">
+<meta property="og:image" content="https://maxshefter-lab.online/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d1117'/%3E%3Ctext x='5' y='22' font-family='monospace' font-size='16' fill='%2334d399'%3E%3E_%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Maxim Shefter",
+  "jobTitle": "DevOps & Cloud Engineer",
+  "url": "https://maxshefter-lab.online/",
+  "image": "https://maxshefter-lab.online/photo.jpg",
+  "address": { "@type": "PostalAddress", "addressCountry": "IL" },
+  "sameAs": [
+    "https://github.com/maxyana84-lab",
+    "https://www.linkedin.com/in/maxim-shefter-5805ba55/"
+  ],
+  "knowsAbout": ["AWS", "Terraform", "Kubernetes", "Amazon EKS", "Docker", "GitHub Actions", "Ansible", "Jenkins", "Python", "Bash", "Linux"]
+}
+</script>
+<style>
+  /*
+    VOICE   calm, technical, confident: an engineer's working console, not a marketing page
+    IDEA    the site behaves like a terminal session and an incident write-up
+    PICTURE the hero terminal (typed commands + portrait); the case study timeline
+    COLOUR  near-black ground, signal green accent, info blue; light theme = printed runbook
+    TYPE    system sans for reading, system mono for commands and labels; four sizes
+  */
+  :root{
+    --bg:#0b0f14; --bg2:#0e141b; --panel:#11171f; --line:#1f2a36; --text:#d7dee8; --muted:#8b98a9;
+    --accent:#34d399; --accent-ink:#06281c; --accent2:#60a5fa; --warn:#fbbf24; --bad:#f87171;
+    --tag-bg:#0f2a22; --tag-line:#1d3d31; --tag2-bg:#0f1e33; --tag2-line:#1c3354; --dot:#16202b;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Cascadia Code", Menlo, Consolas, monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: light){
+    :root{
+      --bg:#f6f7f9; --bg2:#eef1f4; --panel:#ffffff; --line:#dde3ea; --text:#121820; --muted:#566273;
+      --accent:#0f9d6b; --accent-ink:#ffffff; --accent2:#1d5fd1; --warn:#b7791f; --bad:#d64545;
+      --tag-bg:#e7f6ef; --tag-line:#c4e9d8; --tag2-bg:#e8f0fd; --tag2-line:#c7d8f7; --dot:#e2e7ed;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0;min-width:0}
+  html{scroll-behavior:smooth;scroll-padding-top:72px}
+  body{background:var(--bg);color:var(--text);font:16px/1.6 var(--sans);overflow-x:clip;
+       background-image:radial-gradient(circle at 1px 1px,var(--dot) 1px,transparent 0);background-size:24px 24px}
+  a{color:var(--accent2);text-decoration:none} a:hover{text-decoration:underline}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+  .skip{position:absolute;left:-999px;top:8px;background:var(--accent);color:var(--accent-ink);padding:8px 12px;border-radius:6px;z-index:20}
+  .skip:focus{left:12px}
+
+  nav{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;gap:20px;min-height:56px}
+  .logo{font-family:var(--mono);color:var(--accent);font-weight:700;white-space:nowrap}
+  .logo span{color:var(--muted);font-weight:400}
+  nav ul{display:flex;gap:4px;list-style:none;font-size:.92rem;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+  nav ul::-webkit-scrollbar{display:none}
+  nav ul li{flex:none}
+  nav ul a{display:block;color:var(--muted);padding:8px 10px;border-radius:6px;white-space:nowrap}
+  nav ul a:hover,nav ul a.on{color:var(--text);background:var(--panel);text-decoration:none}
+
+  header{padding:64px 0 56px}
+  .status{display:inline-flex;align-items:center;gap:8px;font-size:.85rem;color:var(--muted);border:1px solid var(--line);
+          background:var(--panel);padding:6px 12px;border-radius:999px;margin-bottom:18px}
+  .status i{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 60%,transparent)}70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}
+  .term{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.28)}
+  .term-bar{display:flex;align-items:center;gap:7px;padding:11px 14px;border-bottom:1px solid var(--line)}
+  .term-bar i{width:11px;height:11px;border-radius:50%}
+  .term-bar i:nth-child(1){background:#f87171}.term-bar i:nth-child(2){background:#fbbf24}.term-bar i:nth-child(3){background:#34d399}
+  .term-bar span{margin-left:10px;font:12px var(--mono);color:var(--muted)}
+  .term-body{padding:28px 28px 30px}
+  .hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:32px;align-items:center}
+  .prompt{font:.95rem var(--mono)}
+  .p{color:var(--accent)}
+  h1{font-size:clamp(2.1rem,5.4vw,3.3rem);line-height:1.08;margin:12px 0 8px;letter-spacing:-.025em;text-wrap:balance}
+  .role{font:1.12rem var(--mono);color:var(--accent2)}
+  .lead{color:var(--muted);max-width:620px;margin-top:16px;font-size:1.06rem}
+  .lead b{color:var(--text);font-weight:600}
+  .avatar{width:168px;height:168px;border-radius:50%;border:2px solid var(--accent);overflow:hidden;
+          background:linear-gradient(135deg,var(--tag-bg),var(--tag2-bg));display:grid;place-items:center;
+          font:700 2.4rem var(--mono);color:var(--accent)}
+  .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+  .avatar img+span{display:none}
+  .cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+  .btn{font:.9rem var(--mono);padding:11px 18px;border-radius:8px;border:1px solid var(--line);color:var(--text);background:var(--bg2);min-height:44px;display:inline-flex;align-items:center}
+  .btn:hover{border-color:var(--accent);text-decoration:none}
+  .btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:700}
+  .typed{min-height:1.6em;margin-top:22px}
+  .cursor{display:inline-block;width:9px;height:1.05em;background:var(--accent);vertical-align:-2px;animation:b 1s steps(1) infinite}
+  @keyframes b{50%{opacity:0}}
+  .facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border-top:1px solid var(--line)}
+  .facts div{background:var(--panel);padding:16px 20px}
+  .facts b{display:block;font-size:1.35rem;letter-spacing:-.01em}
+  .facts span{font-size:.84rem;color:var(--muted)}
+
+  section{padding:64px 0;border-top:1px solid var(--line)}
+  h2{font:600 1rem var(--mono);color:var(--accent);margin-bottom:8px}
+  h2::before{content:"## ";color:var(--muted)}
+  .sub{color:var(--muted);max-width:640px;margin-bottom:26px}
+  .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(290px,1fr))}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px;display:flex;flex-direction:column;transition:border-color .2s,transform .2s}
+  .card:hover{border-color:color-mix(in srgb,var(--accent) 45%,var(--line));transform:translateY(-2px)}
+  .card h3{font-size:1.04rem;margin-bottom:6px}
+  .card p{color:var(--muted);font-size:.94rem}
+  .card .foot{margin-top:auto;padding-top:14px}
+  .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+  .tag{font:.74rem var(--mono);padding:3px 8px;border-radius:4px;background:var(--tag-bg);color:var(--accent);border:1px solid var(--tag-line)}
+  .tag.b{background:var(--tag2-bg);color:var(--accent2);border-color:var(--tag2-line)}
+  .more{display:inline-block;margin-top:14px;font:.86rem var(--mono)}
+  code{font:.85em var(--mono);background:var(--bg2);border:1px solid var(--line);padding:1px 6px;border-radius:4px;color:var(--text);overflow-wrap:anywhere}
+
+  .case{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:28px;align-items:start}
+  .case-intro h3{font-size:1.5rem;line-height:1.2;letter-spacing:-.015em;margin-bottom:12px;text-wrap:balance}
+  .case-intro p{color:var(--muted);margin-bottom:12px}
+  .steps{list-style:none;border-left:2px solid var(--line);margin-left:6px}
+  .steps li{position:relative;padding:0 0 22px 26px}
+  .steps li::before{content:"";position:absolute;left:-8px;top:5px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:2px solid var(--c,var(--accent))}
+  .steps .k{font:600 .78rem var(--mono);color:var(--c,var(--accent))}
+  .steps h4{font-size:1rem;margin:2px 0 4px}
+  .steps p{color:var(--muted);font-size:.94rem}
+
+  .minor{font-size:1rem;margin:34px 0 12px}
+  .labs{list-style:none;display:grid;gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--panel)}
+  .labs li{display:grid;grid-template-columns:minmax(180px,240px) minmax(0,1fr);gap:16px;padding:12px 18px;border-top:1px solid var(--line)}
+  .labs li:first-child{border-top:0}
+  .labs a{font:.9rem var(--mono)}
+  .labs span{color:var(--muted);font-size:.92rem}
+  .extras{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-top:8px}
+  .extras div{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;font-size:.94rem}
+  .extras b{display:block;font:500 .8rem var(--mono);color:var(--muted);margin-bottom:6px}
+  .principles{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+  .principles div{border-top:2px solid var(--accent);padding-top:14px}
+  .principles h3{font-size:1rem;margin-bottom:6px}
+  .principles p{color:var(--muted);font-size:.93rem}
+
+  .stack{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+  .stack div{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+  .stack b{display:block;font:500 .8rem var(--mono);color:var(--muted);margin-bottom:6px}
+
+  .timeline{border-left:2px solid var(--line);margin-left:6px}
+  .job{position:relative;padding:0 0 26px 26px}
+  .job::before{content:"";position:absolute;left:-8px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:2px solid var(--accent)}
+  .job .when{font:.82rem var(--mono);color:var(--muted)}
+  .job h3{font-size:1.04rem}
+  .job p{color:var(--muted);font-size:.94rem;max-width:700px}
+
+  .how{font:.86rem var(--mono);background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px;overflow-x:auto;white-space:pre;color:var(--muted)}
+  .how .k{color:var(--accent)} .how .v{color:var(--accent2)}
+
+  .contact{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:32px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center}
+  .contact h3{font-size:1.5rem;letter-spacing:-.015em;margin-bottom:6px}
+  .contact p{color:var(--muted)}
+  .copy{font:.9rem var(--mono);color:var(--text);background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:11px 14px;cursor:pointer;min-height:44px}
+  .copy:hover{border-color:var(--accent)}
+
+  footer{border-top:1px solid var(--line);padding:28px 0 48px;color:var(--muted);font:.82rem var(--mono)}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+  @media (max-width:820px){
+    .case{grid-template-columns:1fr}
+    .facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .contact{grid-template-columns:1fr}
+  }
+  @media (max-width:640px){
+    .labs li{grid-template-columns:1fr;gap:2px}
+    nav .wrap{flex-wrap:wrap;gap:0;padding-top:8px}
+    nav ul{margin-left:-10px;width:calc(100% + 20px);padding-bottom:6px}
+    header{padding:28px 0 40px}
+    .term-body{padding:20px 16px}
+    .hero{grid-template-columns:1fr;gap:18px}
+    .avatar{width:108px;height:108px;font-size:1.7rem;order:-1}
+    .contact{padding:22px}
+    section{padding:48px 0}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav aria-label="Main">
+  <div class="wrap">
+    <div class="logo">maxshefter<span>-lab</span></div>
+    <ul>
+      <li><a href="#case">case study</a></li>
+      <li><a href="#projects">projects</a></li>
+      <li><a href="#principles">how I work</a></li>
+      <li><a href="#stack">stack</a></li>
+      <li><a href="#experience">experience</a></li>
+      <li><a href="#contact">contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header>
+  <div class="wrap">
+    <div class="status"><i></i>Open to DevOps / Cloud roles · Israel</div>
+    <div class="term">
+      <div class="term-bar"><i></i><i></i><i></i><span>max@lab: ~</span></div>
+      <div class="term-body">
+        <div class="hero">
+          <div>
+            <div class="prompt"><span class="p">max@lab:~$</span> whoami</div>
+            <h1>Maxim Shefter</h1>
+            <div class="role">DevOps &amp; Cloud Engineer</div>
+            <p class="lead"><b>10+ years keeping production running</b> — now building infrastructure as code.
+              I work with AWS, Terraform, Kubernetes and CI/CD, and I learn the honest way:
+              deploy real environments, break them, debug them, write it up, tear them down.</p>
+          </div>
+          <div class="avatar"><img src="photo.jpg" alt="Portrait of Maxim Shefter" width="168" height="168" onerror="this.remove()"><span>MS</span></div>
+        </div>
+        <div class="cta">
+          <a class="btn primary" href="#case">Read the case study</a>
+          <a class="btn" href="https://github.com/maxyana84-lab" target="_blank" rel="noopener">GitHub</a>
+          <a class="btn" href="https://www.linkedin.com/in/maxim-shefter-5805ba55/" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="btn" id="cv" href="mailto:__CONTACT_EMAIL__?subject=CV%20request%20%E2%80%94%20Maxim%20Shefter">Request CV</a>
+        </div>
+        <div class="prompt typed" aria-hidden="true"><span class="p">max@lab:~$</span> <span id="cmd"></span><span class="cursor"></span></div>
+      </div>
+      <div class="facts">
+        <div><b>10+ yrs</b><span>production &amp; IT operations</span></div>
+        <div><b>AWS</b><span>VPC, EC2, EKS, RDS, ALB, S3</span></div>
+        <div><b>100% IaC</b><span>Terraform, eksctl, Ansible</span></div>
+        <div><b>13 repos</b><span>public labs &amp; projects on GitHub</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<section id="case">
+  <div class="wrap">
+    <h2>case study</h2>
+    <div class="case">
+      <div class="case-intro">
+        <h3>Eight faults, one broken EKS ingress — found and fixed live</h3>
+        <p>A store app behind the AWS Load Balancer Controller, with Ingress, Service and Deployment manifests broken on purpose. No ALB, 503s, failing HTTPS.</p>
+        <p>I deployed it as-is on a real EKS cluster and worked from symptoms to root causes using only <code>kubectl</code>, AWS APIs and controller logs.</p>
+        <div class="tags"><span class="tag">EKS</span><span class="tag">ALB Controller</span><span class="tag">ACM</span><span class="tag b">eksctl</span><span class="tag b">kubectl</span></div>
+        <a class="more" href="https://github.com/maxyana84-lab/eks-ingress-debug-exercise" target="_blank" rel="noopener">→ full write-up and manifests on GitHub</a>
+      </div>
+      <ol class="steps">
+        <li style="--c:var(--bad)"><div class="k">symptom</div><h4>Cluster up, nodes missing</h4>
+          <p>The node group sat at 0/2 instances with no obvious error. <code>aws autoscaling describe-scaling-activities</code> showed the account only allowed Free Tier instance types, so <code>t3.medium</code> failed silently. Switched to <code>t3.small</code>.</p></li>
+        <li style="--c:var(--warn)"><div class="k">diagnose</div><h4>No load balancer created</h4>
+          <p>Controller logs and <code>kubectl describe ingress</code> pointed to a wrong <code>ingressClassName</code>, a legacy class annotation, broken annotation quoting, an invalid scheme value and a placeholder certificate ARN.</p></li>
+        <li style="--c:var(--accent2)"><div class="k">diagnose</div><h4>ALB up, but 503</h4>
+          <p><code>kubectl get endpoints</code> was empty: the Service selector didn't match the Deployment labels. The Service type was also wrong for the target mode.</p></li>
+        <li><div class="k">result</div><h4>All 8 fixed, verified, torn down</h4>
+          <p>HTTP→HTTPS redirect and TLS handshake verified with a certificate imported into ACM. Wrote an incident report with safeguards, then deleted every resource to keep cost at zero.</p></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <h2>projects</h2>
+    <p class="sub">Public repos with working code, real infrastructure and READMEs that explain the decisions.</p>
+    <div class="grid">
+      <div class="card">
+        <h3>Kubernetes &amp; Helm</h3>
+        <p>Helm chart for a web app — Deployment, Service, ConfigMap, Ingress, HPA, probes and security context — with dev/prod values. CI runs <code>helm lint</code>, installs on a kind cluster, upgrades and rolls back.</p>
+        <div class="foot"><div class="tags"><span class="tag">Helm</span><span class="tag">Kubernetes</span><span class="tag b">kind</span><span class="tag b">CI</span></div>
+        <a class="more" href="https://github.com/maxyana84-lab/helm-kubernetes-demo" target="_blank" rel="noopener">→ repo</a></div>
+      </div>
+      <div class="card">
+        <h3>EKS ALB Canary Deployment</h3>
+        <p>Weighted traffic splitting between two app versions with ALB Ingress, on a cluster defined declaratively with an eksctl config checked into git.</p>
+        <div class="foot"><div class="tags"><span class="tag">EKS</span><span class="tag">ALB Ingress</span><span class="tag b">canary</span></div>
+        <a class="more" href="https://github.com/maxyana84-lab/eks-alb-canary-exercise" target="_blank" rel="noopener">→ repo</a></div>
+      </div>
+      <div class="card">
+        <h3>Terraform: EC2 module + ALB / ASG</h3>
+        <p>A reusable EC2 module and an Application Load Balancer with an Auto Scaling Group, built as composable Terraform.</p>
+        <div class="foot"><div class="tags"><span class="tag">Terraform</span><span class="tag">ALB</span><span class="tag b">Auto Scaling</span></div>
+        <a class="more" href="https://github.com/maxyana84-lab/terraform-module-ec2" target="_blank" rel="noopener">→ repo</a></div>
+      </div>
+      <div class="card">
+        <h3>Flask + MySQL CI/CD to EC2</h3>
+        <p>On every push, GitHub Actions builds a Docker image, pushes it to Docker Hub and deploys to EC2 with Ansible and docker-compose. Solved instance replacement and database-init bugs along the way.</p>
+        <div class="foot"><div class="tags"><span class="tag">GitHub Actions</span><span class="tag">Docker</span><span class="tag">Ansible</span></div>
+        <a class="more" href="https://github.com/maxyana84-lab/flask-mysql-docker-app" target="_blank" rel="noopener">→ repo</a></div>
+      </div>
+      <div class="card">
+        <h3>Monitoring Stack</h3>
+        <p>Prometheus and Alertmanager with automated EC2 service discovery and alerts delivered to Discord.</p>
+        <div class="foot"><div class="tags"><span class="tag">Prometheus</span><span class="tag">Alertmanager</span><span class="tag b">Node Exporter</span></div>
+        <a class="more" href="https://github.com/maxyana84-lab/aws-ec2-prometheus-monitoring" target="_blank" rel="noopener">→ repo</a></div>
+      </div>
+      <div class="card">
+        <h3>This website</h3>
+        <p>S3 + CloudFront with HTTPS via ACM and DNS in Route 53. All Terraform, deployed by GitHub Actions over OIDC — no stored AWS keys. The footer shows the commit that's live.</p>
+        <div class="foot"><div class="tags"><span class="tag">Terraform</span><span class="tag">CloudFront</span><span class="tag">Route 53</span><span class="tag b">OIDC</span></div>
+        <a class="more" href="#pipeline">→ how it's deployed</a></div>
+      </div>
+    </div>
+    <h3 class="minor">More labs</h3>
+    <ul class="labs">
+      <li><a href="https://github.com/maxyana84-lab/flask-react-app" target="_blank" rel="noopener">Jenkins + Ansible pipeline</a><span>Parameterized Jenkinsfile: checkout, build, push, Ansible deploy · Flask + React behind Nginx</span></li>
+      <li><a href="https://github.com/maxyana84-lab/aws-vpc-peering-lab" target="_blank" rel="noopener">AWS networking lab</a><span>Two-tier VPC, public/private subnets, bastion host, VPC peering</span></li>
+      <li><a href="https://github.com/maxyana84-lab/aws-cloud-infrastructure-lab" target="_blank" rel="noopener">Multi-AZ infrastructure</a><span>Multi-AZ VPC with ALBs, EC2 and shared EFS storage</span></li>
+      <li><a href="https://github.com/maxyana84-lab/aws-alb-automation-cli" target="_blank" rel="noopener">AWS CLI automation</a><span>ALB with path-based routing, deployed with AWS CLI and Bash</span></li>
+      <li><a href="https://github.com/maxyana84-lab/aws-rds-postgresql-setup" target="_blank" rel="noopener">RDS PostgreSQL</a><span>Deployment, networking and a troubleshooting guide</span></li>
+      <li><a href="https://github.com/maxyana84-lab/ops-bot" target="_blank" rel="noopener">ops-bot</a><span>Telegram bot for operational alerts and status checks, with CI and tests</span></li>
+      <li><a href="https://github.com/maxyana84-lab/job-bot" target="_blank" rel="noopener">job-bot</a><span>Telegram assistant that automates parts of a job-search workflow</span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="principles">
+  <div class="wrap">
+    <h2>how I work</h2>
+    <p class="sub">Habits from years in production operations, now applied to cloud infrastructure.</p>
+    <div class="principles">
+      <div><h3>Everything as code</h3><p>Clusters, networks and pipelines live in git. If it can't be rebuilt from the repo, it isn't done.</p></div>
+      <div><h3>Debug from symptoms</h3><p>Logs, events and APIs first, guesses last. Every fix gets a root cause, not just a restart.</p></div>
+      <div><h3>Least privilege</h3><p>Short-lived credentials and narrow IAM roles. CI gets exactly the permissions it needs, nothing more.</p></div>
+      <div><h3>Pay only for what runs</h3><p>Lab environments are torn down when the work is done. Cost is part of the design.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="stack">
+  <div class="wrap">
+    <h2>stack</h2>
+    <div class="stack">
+      <div><b>cloud (AWS)</b>VPC, EC2, EKS, ALB, Auto Scaling, RDS, S3, EFS, EBS, IAM, CloudFront, Route 53, ACM</div>
+      <div><b>infrastructure as code</b>Terraform (modules), eksctl, Ansible, AWS CLI</div>
+      <div><b>containers</b>Docker, Docker Compose, Kubernetes, Helm</div>
+      <div><b>CI / CD</b>GitHub Actions, Jenkins (Jenkinsfile), Git</div>
+      <div><b>monitoring</b>Prometheus, Alertmanager, Node Exporter</div>
+      <div><b>scripting</b>Bash, Python (Flask, Boto3), PowerShell</div>
+      <div><b>systems &amp; networking</b>Linux (Ubuntu, RHEL, CentOS), Windows Server, Nginx, TCP/IP, DNS, TLS</div>
+      <div><b>databases &amp; storage</b>PostgreSQL, MySQL, SQL Server, IBM XIV / Storwize</div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <h2>experience</h2>
+    <div class="timeline">
+      <div class="job">
+        <div class="when">2018 — present</div>
+        <h3>Technical Support &amp; Project Manager · Balamut Ltd</h3>
+        <p>Run technical support operations in ServiceNow for critical hardware, including ATM systems and check scanners. Lead technical projects from planning to delivery, work with SQL Server data for reporting, and partner with developers to analyze and solve problems.</p>
+      </div>
+      <div class="job">
+        <div class="when">2007 — 2017</div>
+        <h3>System Integration Specialist &amp; Team Lead · Tel-Ad Electronics</h3>
+        <p>Integrated enterprise storage arrays (IBM XIV / Storwize). Deep diagnostics and log analysis, escalating critical issues to R&amp;D in the US. Built verification routines, planned workload and trained the team.</p>
+      </div>
+      <div class="job">
+        <div class="when">2005 — 2007</div>
+        <h3>Network Manager · Avni Institute &nbsp;·&nbsp; Technical Support · HOT</h3>
+        <p>Administered hybrid server farms and Active Directory; before that, ISP connectivity and network troubleshooting.</p>
+      </div>
+    </div>
+    <div class="extras">
+      <div><b>education &amp; certifications</b>B.A. Business Administration — IVESEP College · MCSE &amp; A+ — Kamtec College · C# Software Development — Specter College</div>
+      <div><b>languages</b>Russian (native) · Hebrew (fluent) · English (professional)</div>
+    </div>
+  </div>
+</section>
+
+<section id="pipeline">
+  <div class="wrap">
+    <h2>how this site is deployed</h2>
+    <p class="sub">Every change goes through a pipeline — no manual uploads, no stored cloud keys.</p>
+<div class="how"><span class="k">git push</span> main
+  └─ <span class="v">GitHub Actions</span>  (OIDC → short-lived IAM role, no secrets)
+       ├─ stamp commit SHA into the page
+       ├─ aws s3 sync site/ → <span class="v">S3</span> (private, Origin Access Control)
+       ├─ cloudfront create-invalidation
+       └─ smoke test: curl https://maxshefter-lab.online
+
+<span class="k">visitor</span> → <span class="v">Route 53</span> → <span class="v">CloudFront</span> (TLS via ACM, HTTP/3, security headers)
+                           └─ <span class="v">S3</span> origin
+
+<span class="k">infrastructure</span>: 100% Terraform · ~$0.50/month</div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <h2>contact</h2>
+    <div class="contact">
+      <div>
+        <h3>Hiring for DevOps or Cloud in Israel?</h3>
+        <p>I'd be glad to talk — and happy to send a CV tailored to the role. Email or LinkedIn reach me fastest.</p>
+        <div class="cta">
+          <a class="btn primary" id="mail" href="mailto:__CONTACT_EMAIL__">Email me</a>
+          <a class="btn" href="https://www.linkedin.com/in/maxim-shefter-5805ba55/" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="btn" href="https://github.com/maxyana84-lab" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+      <button class="copy" type="button" id="copy" data-email="__CONTACT_EMAIL__" aria-label="Copy email address">__CONTACT_EMAIL__ ⧉</button>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="y">2026</span> Maxim Shefter</span>
+    <span id="build">build <a id="sha" href="https://github.com/maxyana84-lab/maxshefter-lab-site">__BUILD_SHA__</a> · <span id="btime">__BUILD_TIME__</span> · CloudFront + Terraform</span>
+  </div>
+</footer>
+
+<script>
+{
+  document.getElementById("y").textContent = new Date().getFullYear();
+
+  // Build stamp: CI replaces the placeholders
+  const sha = document.getElementById("sha");
+  if (sha.textContent.startsWith("__")) {
+    document.getElementById("build").textContent = "build local · CloudFront + Terraform";
+  } else {
+    sha.href += "/commit/" + sha.textContent;
+  }
+
+  // Email: CI fills it from the CONTACT_EMAIL repo variable; hide email UI if unset
+  const copy = document.getElementById("copy");
+  const email = copy.dataset.email;
+  if (email.startsWith("__")) {
+    copy.remove();
+    document.getElementById("mail").remove();
+    document.getElementById("cv").href = "#contact";
+  } else {
+    copy.addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(email); copy.textContent = "copied ✓"; }
+      catch (e) { copy.textContent = email; }
+      setTimeout(() => { copy.textContent = email + " ⧉"; }, 1800);
+    });
+  }
+
+  // Typed terminal commands
+  const cmds = ["terraform apply", "kubectl get pods -A", "aws eks list-clusters", "git push origin main"];
+  const el = document.getElementById("cmd");
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) { el.textContent = cmds[0]; }
+  else {
+    let i = 0, j = 0, del = false;
+    const tick = () => {
+      const c = cmds[i];
+      el.textContent = c.slice(0, j);
+      if (!del && j < c.length) { j++; setTimeout(tick, 55); }
+      else if (!del) { del = true; setTimeout(tick, 1600); }
+      else if (j > 0) { j--; setTimeout(tick, 22); }
+      else { del = false; i = (i + 1) % cmds.length; setTimeout(tick, 350); }
+    };
+    setTimeout(tick, 600);
+  }
+
+  // Highlight current section in nav
+  const links = [...document.querySelectorAll("nav ul a")];
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) links.forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + e.target.id));
+  }), { rootMargin: "-45% 0px -50% 0px" });
+  document.querySelectorAll("main section").forEach(s => io.observe(s));
+}
+</script>
+</body>
+</html>
