@@ -32,7 +32,10 @@ data "aws_iam_policy_document" "github_assume" {
     condition {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:${var.github_repo}:*"]
+      values = [
+        "repo:maxyana84-lab@269995205/maxshefter-lab-site@1474256576:*",
+        "repo:${var.github_repo}:*",
+      ]
     }
   }
 }
